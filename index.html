@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>backbone.js -Hello world</title>
+</head>
+<body>
+	<button id = "check">New Player</button>
+	<ul id = "world-list">
+		
+	</ul>
+	<script src="http://labfile.oss.aliyuncs.com/courses/359/jquery.js"></script>
+	<script src="http://labfile.oss.aliyuncs.com/courses/359/underscore.js"></script>
+	<script src="http://labfile.oss.aliyuncs.com/courses/359/backbone-min.js"></script>
+	<script>
+	(function ($){
+		World = Backbone.Model.extend({
+			name: null
+		});
+		Worlds = Backbone.Collection.extend({
+			//world's oop
+			initialize: function(models,options){
+				this.bind("add",options.view.addOneWorld);
+			}
+		});
+		AppView = Backbone.View.extend({
+			el:$("body"),
+			initialize:function(){
+				this.worlds = new Worlds(null,{view:this})
+			},
+			events: {
+				"click #check": "checkIn",
+			},
+			checkIn: function(){
+				var world_name = prompt("Hi where are you come from?");
+				if (world_name == "" || world_name == null) world_name = 'unknow';
+				var world = new World({name: world_name});
+				this.worlds.add(world);
+			},
+			addOneWorld: function(model){
+				$("#world-list").append("<li> He/She is come from <b>" + model.get('name') + "</b> and saying that 'Hello World!'</li>");
+			}
+		});
+		var appview = new AppView;
+	})(jQuery);
+	  // Your code goes here
+	</script>
+</body>
+</html>
+
